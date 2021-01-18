@@ -20,6 +20,7 @@ conda config --remove channels https://mirrors.tuna.tsinghua.edu.cn/anaconda/clo
 
  conda env create -f environment.yml 
  pip config set global.index-url https://pypi.tuna.tsinghua.edu.cn/simple
- 
+ conda activate
+ conda deactivate
  
  nohup jupyter notebook --config /root/.jupyter/jupyter_notebook_config.py --allow-root &  

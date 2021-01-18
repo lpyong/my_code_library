@@ -1,0 +1,25 @@
+镜像源修改
+conda config --show  --显示镜像源
+
+conda config --remove channels url  --删除镜像源
+conda config --remove channels  https://mirrors.ustc.edu.cn/anaconda/cloud/menpo/
+conda config --remove channels https://mirrors.ustc.edu.cn/anaconda/cloud/bioconda/
+conda config --remove channels https://mirrors.ustc.edu.cn/anaconda/cloud/msys2/
+conda config --remove channels  https://mirrors.ustc.edu.cn/anaconda/cloud/conda-forge/
+conda config --remove channels  https://mirrors.ustc.edu.cn/anaconda/pkgs/free/
+conda config --remove channels https://mirrors.ustc.edu.cn/anaconda/pkgs/main/
+conda config --remove channels  https://mirrors.tuna.tsinghua.edu.cn/anaconda/pkgs/free/
+
+conda config --remove channels channelshttps://mirrors.tuna.tsinghua.edu.cn/anaconda/pkgs/main
+conda config --remove channels https://mirrors.tuna.tsinghua.edu.cn/anaconda/pkgs/free
+conda config --remove channels https://mirrors.tuna.tsinghua.edu.cn/anaconda/pkgs/r
+conda config --remove channels https://mirrors.tuna.tsinghua.edu.cn/anaconda/cloud/pytorch/
+conda config --remove channels https://mirrors.tuna.tsinghua.edu.cn/anaconda/cloud/msys2
+conda config --remove channels https://mirrors.tuna.tsinghua.edu.cn/anaconda/cloud/conda-forge
+
+
+ conda env create -f environment.yml 
+ pip config set global.index-url https://pypi.tuna.tsinghua.edu.cn/simple
+ 
+ 
+ nohup jupyter notebook --config /root/.jupyter/jupyter_notebook_config.py --allow-root &  

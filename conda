@@ -17,10 +17,12 @@ conda config --remove channels https://mirrors.tuna.tsinghua.edu.cn/anaconda/clo
 conda config --remove channels https://mirrors.tuna.tsinghua.edu.cn/anaconda/cloud/msys2
 conda config --remove channels https://mirrors.tuna.tsinghua.edu.cn/anaconda/cloud/conda-forge
 
-
- conda env create -f environment.yml 
+编辑jupyter_notebook_config.py的配置文件，可实现远程连接jupyter 
+c.NotebookApp.ip  c.NotebookApp.passwd    c.NotebookApp.notebook_dir
  pip config set global.index-url https://pypi.tuna.tsinghua.edu.cn/simple
- conda activate
- conda deactivate
+ conda env create -f environment.yml 
+
+ conda activate gluon
+ conda deactivate  gluon
  
  nohup jupyter notebook --config /root/.jupyter/jupyter_notebook_config.py --allow-root &  

@@ -1,0 +1,74 @@
+$ git config --global user.name "lpyong"
+$ git config --global user.email "491149256@qq.com"
+
+
+#git初始化方式--本质是添加.git管理文件
+
+一 git clone https://github.com/lpyong/my_code_library.git 
+二 $ mkdir learngit
+   $ cd learngit
+   $ pwd
+   /Users/michael/learngit
+   
+   git init 
+   Initialized empty Git repository in /Users/michael/learngit/.git/
+   
+
+git add readme.txt  #将文件添加到git仓库
+git commit -m "wrote a readme file"  #文件提交到仓库
+[master (root-commit) eaadf4e] wrote a readme file
+ 1 file changed, 2 insertions(+)
+ create mode 100644 readme.txt
+ 
+ 
+ git log  查看对文件的操作日志
+ 
+ 
+ 版本回退
+ git reset --hard HEAD^
+ 
+ git reset --hard 5679-- 版本号
+ 
+ git reflog  查看操作记录
+ 
+ 工作区（Working Directory）
+ 就是你在电脑里能看到的目录，比如我的learngit文件夹就是一个工作区：
+ 
+
+ 
+ 版本库（Repository）
+工作区有一个隐藏目录.git，这个不算工作区，而是Git的版本库。
+
+Git的版本库里存了很多东西，其中最重要的就是称为stage（或者叫index）的暂存区，还有Git为我们自动创建的第一个分支master，以及指向master的一个指针叫HEAD。
+第一步是用git add把文件添加进去，实际上就是把文件修改添加到暂存区；
+
+第二步是用git commit提交更改，实际上就是把暂存区的所有内容提交到当前分支。
+
+ git status
+ 
+ # On branch master
+# Changes not staged for commit:
+#   (use "git add <file>..." to update what will be committed)
+#   (use "git checkout -- <file>..." to discard changes in working directory)
+#
+#       modified:   readme.txt
+#
+# Untracked files:
+#   (use "git add <file>..." to include in what will be committed)
+#
+#       LICENSE
+no changes added to commit (use "git add" and/or "git commit -a")
+readme.txt被修改了，而LICENSE还从来没有被添加过，所以它的状态是Untracked。
+
+
+
+管理修改
+
+echo "Git tracks changes." >> readme.txt
+git add readme.txt
+echo "Git tracks changes. again" >> readme.txt
+
+
+git diff HEAD -- readme.txt命令可以查看工作区和版本库里面最新版本的区别：
+
+

@@ -1,11 +1,11 @@
 $ git config --global user.name "lpyong"
 $ git config --global user.email "491149256@qq.com"
 
-
+一、创建版本库
 #git初始化方式--本质是添加.git管理文件
 
-一 git clone https://github.com/lpyong/my_code_library.git 
-二 $ mkdir learngit
+1 git clone https://github.com/lpyong/my_code_library.git 
+2 $ mkdir learngit
    $ cd learngit
    $ pwd
    /Users/michael/learngit
@@ -13,62 +13,105 @@ $ git config --global user.email "491149256@qq.com"
    git init 
    Initialized empty Git repository in /Users/michael/learngit/.git/
    
+3 将文件添加到版本库步骤：
+      git add readme.txt  #将文件添加到git仓库
+      git commit -m "wrote a readme file"  #文件提交到仓库
+      [master (root-commit) eaadf4e] wrote a readme file
+       1 file changed, 2 insertions(+)
+       create mode 100644 readme.txt
 
-git add readme.txt  #将文件添加到git仓库
-git commit -m "wrote a readme file"  #文件提交到仓库
-[master (root-commit) eaadf4e] wrote a readme file
- 1 file changed, 2 insertions(+)
- create mode 100644 readme.txt
+
+       git log  查看对文件的操作日志
+       commit 1094adb7b9b3807259d8cb349e7df1d4d6477073 (HEAD -> master)
+      Author: Michael Liao <askxuefeng@gmail.com>
+      Date:   Fri May 18 21:06:15 2018 +0800
+
+          append GPL
+
+      commit e475afc93c209a690c39c13a46716e8fa000c366
+      Author: Michael Liao <askxuefeng@gmail.com>
+      Date:   Fri May 18 21:03:36 2018 +0800
+
+          add distributed
+
+      commit eaadf4e385e865d25c48e7ca9c8395c3f7dfaef0
+      Author: Michael Liao <askxuefeng@gmail.com>
+      Date:   Fri May 18 20:59:18 2018 +0800
+
+          wrote a readme file
  
  
- git log  查看对文件的操作日志
- 
- 
- 版本回退
- git reset --hard HEAD^
- 
- git reset --hard 5679-- 版本号
- 
- git reflog  查看操作记录
- 
- 工作区（Working Directory）
- 就是你在电脑里能看到的目录，比如我的learngit文件夹就是一个工作区：
- 
+ 二 版本回退
+       git reset --hard HEAD^
+       HEAD is now at e475afc add distributed
+
+       git reset --hard 5679-- 版本号
+
+       git reflog  查看操作记录
+
+       工作区（Working Directory）
+       就是你在电脑里能看到的目录，比如我的learngit文件夹就是一个工作区：
+
 
  
- 版本库（Repository）
-工作区有一个隐藏目录.git，这个不算工作区，而是Git的版本库。
+ 三 版本库（Repository）
+      工作区有一个隐藏目录.git，这个不算工作区，而是Git的版本库。
 
-Git的版本库里存了很多东西，其中最重要的就是称为stage（或者叫index）的暂存区，还有Git为我们自动创建的第一个分支master，以及指向master的一个指针叫HEAD。
-第一步是用git add把文件添加进去，实际上就是把文件修改添加到暂存区；
+      Git的版本库里存了很多东西，其中最重要的就是称为stage（或者叫index）的暂存区，还有Git为我们自动创建的第一个分支master，以及指向master的一个指针叫HEAD。
+      第一步是用git add把文件添加进去，实际上就是把文件修改添加到暂存区；
 
-第二步是用git commit提交更改，实际上就是把暂存区的所有内容提交到当前分支。
+      第二步是用git commit提交更改，实际上就是把暂存区的所有内容提交到当前分支。
 
- git status
- 
- # On branch master
-# Changes not staged for commit:
-#   (use "git add <file>..." to update what will be committed)
-#   (use "git checkout -- <file>..." to discard changes in working directory)
-#
-#       modified:   readme.txt
-#
-# Untracked files:
-#   (use "git add <file>..." to include in what will be committed)
-#
-#       LICENSE
-no changes added to commit (use "git add" and/or "git commit -a")
-readme.txt被修改了，而LICENSE还从来没有被添加过，所以它的状态是Untracked。
+       git status
 
-
-
-管理修改
-
-echo "Git tracks changes." >> readme.txt
-git add readme.txt
-echo "Git tracks changes. again" >> readme.txt
+       # On branch master
+      # Changes not staged for commit:
+      #   (use "git add <file>..." to update what will be committed)
+      #   (use "git checkout -- <file>..." to discard changes in working directory)
+      #
+      #       modified:   readme.txt
+      #
+      # Untracked files:
+      #   (use "git add <file>..." to include in what will be committed)
+      #
+      #       LICENSE
+      no changes added to commit (use "git add" and/or "git commit -a")
+      readme.txt被修改了，而LICENSE还从来没有被添加过，所以它的状态是Untracked。
 
 
-git diff HEAD -- readme.txt命令可以查看工作区和版本库里面最新版本的区别：
 
+  四管理修改
+
+      echo "Git tracks changes." >> readme.txt
+      git add readme.txt
+      echo "Git tracks changes. again" >> readme.txt
+      git commit -m "git tracks changes"
+      git status 
+      On branch master
+      Changes not staged for commit:
+        (use "git add <file>..." to update what will be committed)
+        (use "git checkout -- <file>..." to discard changes in working directory)
+
+         modified:   readme.txt
+
+      no changes added to commit (use "git add" and/or "git commit -a")
+      
+     commit 以后，第二次也被提交了
+
+
+      git diff HEAD -- readme.txt命令可以查看工作区和版本库里面最新版本的区别：
+      
+      
+      五 撤销修改
+       git checkout -- readme.txt  丢弃工作区的修改
+       命令git checkout -- readme.txt意思就是，把readme.txt文件在工作区的修改全部撤销，这里有两种情况：
+
+      一种是readme.txt自修改后还没有被放到暂存区，现在，撤销修改就回到和版本库一模一样的状态；
+
+       一种是readme.txt已经添加到暂存区后，又作了修改，现在，撤销修改就回到添加到暂存区后的状态。
+      git reset HEAD readme.txt
+      git reset命令既可以回退版本，也可以把暂存区的修改回退到工作区。当我们用HEAD时，表示最新的版本。
+      
+      六 创建与合并分支
+      
 

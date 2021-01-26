@@ -1,0 +1,51 @@
+服务请求模板
+tbl_cdzx_service_info
+
+select distinct a.bus_pro_id,a.create_time,
+ a.mobile_no,a.service_type_name1,
+a.create_user,a.create_name,a.contact_id 
+from 
+  (select a.mobile_no,a.service_type_name1,a.dts_kaf_offset,a.code_cust_area,a.contact_id,a.create_time,a.create_user,a.create_name,a.bus_pro_id,
+          rank() over (partition by  a.contact_id order by dts_kaf_offset desc) as sn   
+  from kf_user.tbl_cdzx_service_info  a  
+  where/* bus_pro_id = '81' */
+   create_time>='2020-11-01' 
+  and create_time<'2021-01-01' 
+  and pro_id = 'S2') a
+ 
+where a.sn = 1
+
+
+-------------------------------------------------------------------------------------------------------------------
+
+
+--人工应答量，人工请求量、应答量(新疆汉语的末班)
+select c.pro_name,month_id,logdate,/*calleeno,c.pro_name,c.city_name,*/
+
+
+count(distinct case when device_type in ('1','2') then call_id else null end ) usercallin,
+count(distinct case when device_type in ('1','2') then caller_no else null end ) userll
+count(distinct case when device_type='2' and calltime>0 then call_id else null end） 人工应答量
+from
+(
+select
+to_char(m.day_id,'00') logdate,m.call_id,m.call_id_num,(to_date(m.call_end,'yyyy-MM-dd hh24:mi:ss') - to_date(m.ack_begin,'yyyy-MM-dd hh24:mi:ss'))*3600*24 calltime,
+m.caller_no,
+m.callee_no,
+substr(m.callee_no,-5,5) calleeno,  --取后5位
+case when substr(m.callee_no,1,instr(m.callee_no,'1001',1,1)-1) is null then substr(m.callee_no,6,4) else substr(m.callee_no,1,instr(m.callee_no,'1001',1,1)-1) end citycode,
+m.ack_begin,m.call_end,m.device_type,m.us_skill_id_of_call,m.month_id
+from kf_user.DWD_D_MEDIA_TICKET m
+where m.month_id in ('202012','202101')
+/*and to_number(m.day_id)>= 20
+and to_number(m.day_id) < 25*/
+and m.call_type in ('0','5','46') --普通呼入、长途呼入呼叫和国际长途来话
+and m.device_type in ('1','2','3','5') --技能队列、业务代表、IVR业务流程
+and m.media_type= 5  --普通语音电话
+) m,
+(select * from kf_select_user.DIM_AREA_CITY_PROV c /*where c.pro_name='四川'*/) c
+where m.calleeno in ('10010'/*,'10018','10019'*/)
+and case when m.citycode like '028%' then '0028' 
+    when  m.citycode like '023%' then '0023' else m.citycode end = c.city_code(+)
+     and logdate in (24,25)
+group by c.pro_name,m.month_id,logdate/*,calleeno,c.pro_name,c.city_name*/;

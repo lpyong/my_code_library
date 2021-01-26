@@ -1,3 +1,7 @@
+数据集市新表卸载
+create table dc_cube.lpy_temp_1 as
+
+select bus_pro_id, call_no, labourreqtime from dc_cbss.dc_detailinfocustage65_sc where labourreqtime is not null and date_id >='2021-01-24' and date_id <='2021-01-25'
 服务请求模板
 tbl_cdzx_service_info
 

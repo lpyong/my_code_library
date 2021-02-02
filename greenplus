@@ -1,6 +1,11 @@
 postgresql 语法
 select length('0231001011')   
 
+select substring(“0231001011, 
+
+select length('0231001011')   
+
+select position('10010' in '0231001011')
 
 截取最后五位
 substring
@@ -57,7 +62,9 @@ select
    count( distinct case when call_id_num = '-1' and  (ack_len + call_len) > 0  then caller_no else null end ) sysuser,
    count( distinct case when device_type in ('1','2') then call_id else null end ) usercallin,
    count( distinct case when device_type in ('1','2') then caller_no else null end ) userll,
-   count(distinct case when device_type='2' and  (ack_len + call_len > 0)then call_id else null end) "人工应答量"
+   count(distinct case when device_type='2' and  (ack_len + call_len > 0)then call_id else null end) "人工应答量",
+   count(distinct case when device_type='2' and  (ack_len + call_len > 0)then caller_no else null end) "人工应答用户数"
+   
    
 
    
@@ -104,7 +111,50 @@ group by  meaning,"月"
 
 ---------------------------------------------------------------------------------------------------------------------------------------------
 新疆系统应答量
+select
+   meaning "省份",
+   count( distinct case when device_type in ('1','2') then call_id else null end ) usercallin,
+   count( distinct case when device_type in ('1','2') then caller_no else null end ) userll,
+   count(distinct case when device_type='2' and  (ack_len + call_len > 0)then call_id else null end) "人工应答量"
 
+   
+from
+ (
+
+   select distinct 
+    call_id,
+    call_id_num,
+    caller_no,
+    wait_begin,
+    wait_end,
+    EXTRACT(epoch FROM CAST(wait_end AS TIMESTAMP))-EXTRACT(epoch FROM CAST(wait_begin AS TIMESTAMP)) as wait_len,
+    ack_begin,
+    ack_end,
+    EXTRACT(epoch FROM CAST(ack_end AS TIMESTAMP))-EXTRACT(epoch FROM CAST(ack_begin AS TIMESTAMP)) as ack_len,
+    call_begin,
+    call_end,
+    EXTRACT(epoch FROM CAST(call_end AS TIMESTAMP))-EXTRACT(epoch FROM CAST(call_begin AS TIMESTAMP)) as call_len,
+    bus_pro_id,
+    device_type device_type,
+	  us_skill_id_of_call 
+   
+   from
+    dc_dwd.dwd_d_media_ticket_ex_sc
+   where
+    date_id >= '2020-11-01'
+    and date_id < '2020-12-01'
+    and device_type in ('1','2')
+    and call_type in ('0','5','46')
+	  and bus_pro_id = '89'
+  )aa
+  
+left join 
+(select distinct meaning,code from dc_dim.dim_province_code_all ff ) b
+on aa.bus_pro_id = b.code
+join lpy_xinjiang_code c 
+on aa.us_skill_id_of_call = c.code_id
+
+group by b.meaning
 
 通话时长计算
 ----------------------------------------------------------------------------------------------------------------------------------------

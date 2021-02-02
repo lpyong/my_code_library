@@ -151,7 +151,7 @@ from
 left join 
 (select distinct meaning,code from dc_dim.dim_province_code_all ff ) b
 on aa.bus_pro_id = b.code
-join lpy_xinjiang_code c 
+join dc_cube.lpy_xinjiang_code c
 on aa.us_skill_id_of_call = c.code_id
 
 group by b.meaning

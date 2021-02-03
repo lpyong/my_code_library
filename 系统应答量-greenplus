@@ -1,0 +1,57 @@
+select
+   --meaning "省份",
+   "月","天",
+  
+   count( distinct case when call_id_num = '-1' and  (ack_len + call_len) > 0  then call_id else null end ) "系统应答量",
+   count( distinct case when call_id_num = '-1' and  (ack_len + call_len) > 0  then caller_no else null end ) "系统应答用户数"
+   --count( distinct case when device_type in ('1','2') then call_id else null end ) "人工请求量",
+   --count( distinct case when device_type in ('1','2') then caller_no else null end ) "人工请求用户数",
+   --count(distinct case when device_type='2' and  (ack_len + call_len > 0)then call_id else null end) "人工应答量",
+   --count(distinct case when device_type='2' and  (ack_len + call_len > 0)then caller_no else null end) "人工应答用户数"
+   
+   
+
+   
+from
+ (
+
+   select distinct 
+    call_id,
+    call_id_num,
+    substring(callee_no from position('1001' in callee_no) for 5) calleeno,
+    caller_no,
+    wait_begin,
+    wait_end,
+    EXTRACT(epoch FROM CAST(wait_end AS TIMESTAMP))-EXTRACT(epoch FROM CAST(wait_begin AS TIMESTAMP)) as wait_len,
+    ack_begin,
+    ack_end,
+    EXTRACT(month from date_id) "月",
+    EXTRACT(day from date_id) "天",
+    EXTRACT(epoch FROM CAST(ack_end AS TIMESTAMP))-EXTRACT(epoch FROM CAST(ack_begin AS TIMESTAMP)) as ack_len,
+    call_begin,
+    call_end,
+    EXTRACT(epoch FROM CAST(call_end AS TIMESTAMP))-EXTRACT(epoch FROM CAST(call_begin AS TIMESTAMP)) as call_len,
+    bus_pro_id,
+    device_type device_type,
+    callee_no
+	
+   
+   from
+    dc_dwd.dwd_d_media_ticket_ex_sc
+   where
+   substring(callee_no from position('1001' in callee_no) for 5) = '10010'  --10010和短号
+    and  date_id >= '2020-11-01'
+
+    and device_type in ('1','2','3','5')
+    and call_type in ('0','5','46')
+	  and  (position('10010' in callee_no) +4) = length(callee_no)    --判断是否是10010还是短号 小于是短号
+	  and  bus_pro_id in ('70','79','81','83','85','87','88')
+	  and media_type = '5'
+  )aa
+  
+left join 
+(select distinct meaning,code from dc_dim.dim_province_code_all ff ) b
+on aa.bus_pro_id = b.code
+
+--where 天 in ('1','2')
+group by "月","天"

@@ -1,5 +1,6 @@
 数据集市新表卸载http://10.172.46.168:17134/  无限制下载地址  创建时间隔天会有两通电话、 
 create table dc_cube.lpy_temp_1 as
+select to_char(to_date('2021-01-01','yyyy-mm-dd'),'yyyymm') from dual;  --截取时间字符串的年月
 
 select bus_pro_id, call_no, labourreqtime from dc_cbss.dc_detailinfocustage65_sc where labourreqtime is not null and date_id >='2021-01-24' and date_id <='2021-01-25'
 服务请求模板
@@ -18,7 +19,6 @@ from
   and pro_id = 'S2') a
  
 where a.sn = 1
-
 
 -------------------------------------------------------------------------------------------------------------------
 

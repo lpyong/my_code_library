@@ -1,3 +1,53 @@
+--接触记录服务星级     
+select  distinct code_cust_level,code_name,caller  /* t1.code_cust_level,t2.code_name */  
+     from  kf_user.TBL_CDZX_CONTACT_INFO t1 ,--接触记录表
+           kf_user.dwd_r_general_code t2--码表
+    where t1.code_cust_level=t2.code_value
+      and   t2.code_type='DICT_CUST_LEVEL' 
+      and t1.create_time>='2020-10-01'
+      and t1.create_time <'2021-02-01'
+      and code_name  like '五星%'
+
+select distinct a.create_time,a.contact_id,a.caller, b.code_name 
+from 
+ 
+ (select distinct create_time,caller, service_no,contact_id,call_id,code_cust_city,rank() over (partition by contact_id order by dts_kaf_offset desc) sn 
+  from kf_user.tbl_cdzx_contact_info 
+  where pro_id = 'S2' 
+  AND BUS_PRO_ID = '87' 
+  and create_time>='2021-01-01' 
+  and create_time < '2021-02-01' 
+   ) a, 
+  (select 
+        * 
+  from kf_user.dwd_r_general_code 
+  where code_type='PRO_B_CITY' ) b 
+ 
+where sn = 1 
+ and a.code_cust_city = b.code_value(+)
+--服务诉求
+(select distinct 日期,mobile_no,service_type_name1
+      from (select distinct
+                a.mobile_no,
+                a.service_type_name1,
+                a.dts_kaf_offset,
+                a.code_cust_area,
+                a.contact_id,
+                a.create_time,
+                a.create_user,
+                a.create_name,
+                to_char(to_date('2021-01-01','yyyy-mm-dd'),'yyyymm') 日期,
+                rank() over (partition by  a.contact_id order by dts_kaf_offset desc) as sn   
+              from kf_user.tbl_cdzx_service_info  a  
+             where 
+               create_time>='2020-12-01' 
+               and create_time<'2021-01-01' 
+               and pro_id = 'S2'
+               and bus_pro_id = '81'
+               ) c
+    where sn = 1  ) 
+
+
 select
    --meaning "省份",
    "月","天",

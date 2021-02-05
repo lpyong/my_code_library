@@ -53,3 +53,27 @@ and case when m.citycode like '028%' then '0028'
     when  m.citycode like '023%' then '0023' else m.citycode end = c.city_code(+)
      and logdate in (24,25)
 group by c.pro_name,m.month_id,logdate/*,calleeno,c.pro_name,c.city_name*/;
+
+
+
+---服务请求
+(select distinct 日期,mobile_no,service_type_name1
+      from (select distinct
+                a.mobile_no,
+                a.service_type_name1,
+                a.dts_kaf_offset,
+                a.code_cust_area,
+                a.contact_id,
+                a.create_time,
+                a.create_user,
+                a.create_name,
+                to_char(to_date('2021-01-01','yyyy-mm-dd'),'yyyymm') 日期,
+                rank() over (partition by  a.contact_id order by dts_kaf_offset desc) as sn   
+              from kf_user.tbl_cdzx_service_info  a  
+             where 
+               create_time>='2020-11-01' 
+               and create_time<'2021-02-01' 
+               and pro_id = 'S2'
+               and bus_pro_id = '81'
+               ) c
+    where sn = 1  ) 

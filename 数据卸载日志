@@ -3,6 +3,27 @@ create table dc_cube.lpy_temp_1 as
 select to_char(to_date('2021-01-01','yyyy-mm-dd'),'yyyymm') from dual;  --截取时间字符串的年月
 
 select bus_pro_id, call_no, labourreqtime from dc_cbss.dc_detailinfocustage65_sc where labourreqtime is not null and date_id >='2021-01-24' and date_id <='2021-01-25'
+select
+  distinct a.*,b.digit_code
+from
+  (
+    select *
+    from
+      dc_cbss.dc_detailinfocustage65_sc where date_id >= '2020-11-01'
+      and date_id < '2021-02-01'
+  ) a,
+  (
+    select
+      *
+    from
+      dc_dwd.dwd_d_ivr_track_ex_sc
+    where
+      date_id >= '2020-11-01'
+      and date_id < '2021-02-01'
+      and substring(digit_code from 3 for 5) in ('01005','15029','15125')
+  ) b
+  
+  where a.callid = b.callin_id
 服务请求模板
 tbl_cdzx_service_info
 

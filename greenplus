@@ -88,6 +88,7 @@ from
     call_end,
     EXTRACT(epoch FROM CAST(call_end AS TIMESTAMP))-EXTRACT(epoch FROM CAST(call_begin AS TIMESTAMP)) as call_len,
     bus_pro_id,
+    
     device_type device_type,
     callee_no
 	
@@ -101,6 +102,7 @@ from
     and device_type in ('1','2','3','5')
     and call_type in ('0','5','46')
 	and  (position('10010' in callee_no) +4) =length(callee_no)
+    and media_type = '5'
 	
   )aa
   

@@ -98,7 +98,7 @@ from
    substring(callee_no from position('1001' in callee_no) for 5) = '10010'
     and  date_id >= '2020-11-01'
     and date_id <= '2021-01-31'
-    and device_type in ('1','2','3')
+    and device_type in ('1','2','3','5')
     and call_type in ('0','5','46')
 	and  (position('10010' in callee_no) +4) =length(callee_no)
 	

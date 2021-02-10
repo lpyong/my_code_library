@@ -9,6 +9,40 @@ select position('10010' in '0231001011')
 
 截取最后五位
 substring
+
+select
+  distinct a.call_id,b.call_id,
+  d.service_type_name1
+from
+  (
+    select
+      *
+    from
+      dc_cube.lpy_1
+  ) a,
+  (
+    select
+      *
+    from
+      dc_dwd.dwd_d_media_ticket_ex_sc
+    where
+      date_id >= '2021-02-09'
+  ) b,
+  (
+    select
+      *
+    from
+      dc_dwd.dwd_d_serv_requ_ex_dts_sc
+    where
+      date_id = '2021-02-09'
+  ) d,
+  (select * from dc_dwd.dwd_d_labour_contact_ex_sc where date_id = '2021-02-09'
+  ) c
+where
+  a.call_id = b.caller_no
+  
+  and b.call_id = c.call_id
+  and c.contact_id = d.contact_id
 系统应答量
 ---------------------------------------------------------------------------------------------------------
 select

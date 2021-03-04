@@ -3,3 +3,7 @@ sql select c_xxx_s from t1 left join t2 on t1.key=t2.key where t2.key is NULL �
 pandas 两种方式 先合并去重 和not in 
   data_kf_2 = data_kf_1.append
   data_kf_2.drop_duplicates(keep=False,inplace = True)
+  
+二、交叉表
+pivot和pivot_table的区别
+

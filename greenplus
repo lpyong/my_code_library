@@ -230,6 +230,7 @@ from
     and date_id < '2021-01-27'
     and device_type in ('2')
     and call_type in ('0','5','46')
+    substring(callee_no from position('1001' in callee_no) for 5) = '10010'
     and  EXTRACT(epoch FROM CAST(ack_end AS TIMESTAMP))-EXTRACT(epoch FROM CAST(ack_begin AS TIMESTAMP)) + EXTRACT(epoch FROM CAST(call_end AS TIMESTAMP))-EXTRACT(epoch FROM CAST(call_begin AS TIMESTAMP)) > 0 ) aa 
 
    

@@ -6,4 +6,6 @@ pandas 两种方式 先合并去重 和not in
   
 二、交叉表
 pivot和pivot_table的区别
-
+pivot是指对指定的索引和列进行数据结构重塑，无法聚合 index 行名， columns 新的列明，列明为该列的值，values 行列对应的值
+ pivot_table 有聚合效果。
+ 反透视表 melt 

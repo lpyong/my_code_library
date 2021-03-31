@@ -54,6 +54,48 @@ where
   
   dc_dwa.dwa_d_ai_evaluate_all_ny  ai满意度调查表
   select * from dc_dwd.dwd_d_message_record_ex_dts_sc  短信下发记录
+  
+  dc_dwd.dwd_d_ivr_default_language_info_ex_sc  维语特殊名单
+ ----------------------------------------------------------------------------------------------------------------------------------- 
+  select * from 
+(SELECT
+ outbound_id ,create_time ,callerno, calleeno ,substr(calleeno ,6,4) as calleeqh,SOURCE_TYPE,CUST_LEVEL,OUTBOUND_STATUS,pro_id 
+from dc_dwd.dwd_d_outbound_info_ex_ny t
+WHERE date_id >='20210201'  and date_id <='20210228' 
+and  t.SOURCE_TYPE = 'IVR'
+AND t.CUST_LEVEL like '5%'
+)aa
+left join 
+(select * from (select 
+serial_id,call_id,contact_id,third_id,source_type,model_type,user_code,user_name,pro_id,org_id,create_time create_time1,
+ROW_NUMBER ()over(partition by third_id order by create_time) as  ran
+from dc_dwd.dwd_d_outline_contact_ex_ny where date_id >='20210201'  and date_id <='20210228'
+)a where ran='1')bb
+on aa.outbound_id=bb.third_id
+left join 
+(select tph_code_standard,prov_code,prov_name from dc_dim.dim_area_code_all a where tph_code_standard !='')cc
+on aa.calleeqh=cc.tph_code_standard
+;
+  目标用户回访记录
+  SELECT  distinct 
+ outbound_id ,callerno 主叫号码, calleeno 被叫号码,
+ contact_time 来电时间,
+ last_outbound_time 外呼时间,
+ last_outbound_usercode 外呼工号,
+ last_outbound_username 姓名,
+ substr(calleeno ,6,4) as calleeqh,
+ SOURCE_TYPE,
+ CUST_LEVEL 星级 ,
+ OUTBOUND_STATUS 外呼状态,
+
+(EXTRACT(epoch FROM CAST(last_outbound_time AS TIMESTAMP))-EXTRACT(epoch FROM CAST(contact_time AS TIMESTAMP)))/60 as  "间隔分钟"
+from dc_dwd.dwd_d_outbound_info_ex_ny t
+WHERE contact_time >= to_char(current_date - interval '1 day', 'yyyy-mm-dd')
+and  t.SOURCE_TYPE = 'IVR'
+AND t.CUST_LEVEL like '5%'
+and last_outbound_time is not null
+
+---------------------------------------------------------------------------------------------------------------------  
 系统应答量
 ---------------------------------------------------------------------------------------------------------
 select

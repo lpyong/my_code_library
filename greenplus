@@ -56,6 +56,7 @@ where
   select * from dc_dwd.dwd_d_message_record_ex_dts_sc  短信下发记录
   
   dc_dwd.dwd_d_ivr_default_language_info_ex_sc  维语特殊名单
+  select count(distinct contact_id) from dc_dwd.dwd_d_trans_conn_ex_dts_sc where dest_num = '0279686811' and date_id ='2021-04-01'
  ----------------------------------------------------------------------------------------------------------------------------------- 
   select * from 
 (SELECT

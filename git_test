@@ -123,6 +123,7 @@ $ git config --global user.email "491149256@qq.com"
       git remote add origin https://github.com/lpyong/dive_into_deep_learning.git 
       
        github,Empty reply from server？
+ https://blog.csdn.net/dashi_lu/article/details/89641778      
 最大可能原因：代理问题。比如设置了代理，但是代理此处不可用。或者（我遇到的）加了代理，但是本身git仓库是内网特殊的gitlab仓库，导致加了代理无法访问。
 解决办法：（检查和确认后）去掉代理操作：（拷贝自我整理的教程内容的一部分）
 取消代理取消本地代理命令行方式：git config --unset http.proxy配置文件方式：vi .git/config方式1：去掉http的proxy方式2：设置proxy值是空[http]    proxy = 

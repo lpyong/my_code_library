@@ -113,10 +113,18 @@ $ git config --global user.email "491149256@qq.com"
       git reset命令既可以回退版本，也可以把暂存区的修改回退到工作区。当我们用HEAD时，表示最新的版本。
       
       六 创建与合并分支
+      
+      7 远程连接
+      创建文件夹
+      初始化 git init
+      git add .
+      git commit -m "first commit"
+      git branch -M main
+      git remote add origin https://github.com/lpyong/dive_into_deep_learning.git 
+      
        github,Empty reply from server？
 最大可能原因：代理问题。比如设置了代理，但是代理此处不可用。或者（我遇到的）加了代理，但是本身git仓库是内网特殊的gitlab仓库，导致加了代理无法访问。
 解决办法：（检查和确认后）去掉代理操作：（拷贝自我整理的教程内容的一部分）
 取消代理取消本地代理命令行方式：git config --unset http.proxy配置文件方式：vi .git/config方式1：去掉http的proxy方式2：设置proxy值是空[http]    proxy = 
 取消全局代理命令行方式：git config --global --unset http.proxy配置文件方式：vi ~/.gitconfig方式1：去掉http的proxy方式2：设置proxy值是空[http]    proxy =
-
-
+      

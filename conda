@@ -1,3 +1,53 @@
+-------------sh Anaconda3-5.2.0-Linux-x86_64.sh
+Do you wish the installer to prepend the Anaconda3 install location
+to PATH in your /root/.bashrc ? [yes|no]
+[no] >>> 
+You may wish to edit your .bashrc to prepend the Anaconda3 install location to PATH:
+
+export PATH=/opt/anaconda3/bin:$PATH
+
+Thank you for installing Anaconda3!
+
+------------echo ". /root/anaconda3/etc/profile.d/conda.sh" >> ~/.bashrc
+------------ln -s /root/anaconda3/etc/profile.d/conda.sh /etc/profile.d/conda.sh
+
+进入环境：conda activate
+
+
+jupyter notebook --generate-config
+
+jupyter当前主目录取决于命令执行时所在的目录。
+配置jupyter使用密码访问
+将要配置的密码使用passwd函数处理：
+(base) [root@VM_0_9_centos bak]# python
+Python 3.6.5 |Anaconda, Inc.| (default, Apr 29 2018, 16:14:56) 
+[GCC 7.2.0] on linux
+Type "help", "copyright", "credits" or "license" for more information.
+>>> from notebook.auth import passwd
+>>> passwd()
+Enter password: 
+Verify password: 
+'sha1:13c0e9e600be:b1caae19615389900ba30f072caf1c5f4dd388b1'
+>>> 
+
+上面Enter password和Verify password的输入不会回想，两次输入你需要配置的密码回车，即可得到sha1码。
+
+例如我配置的密码是123456，则sha1码是sha1:13c0e9e600be:b1caae19615389900ba30f072caf1c5f4dd388b1
+
+再编辑下jupyter配置：
+
+取消c.NotebookApp.password = ''的注释，改为c.NotebookApp.password = 'sha1:13c0e9e600be:b1caae19615389900ba30f072caf1c5f4dd388b1'
+
+其他配置：
+
+c.NotebookApp.allow_root = True : root用户下执行不需要加–allow-root参数
+
+c.NotebookApp.open_browser = False : 启动默认不打开游览器
+
+(base) [root@VM_0_9_centos ipython]# vi ~/.jupyter/jupyter_notebook_config.py
+取消c.NotebookApp.ip = 'localhost'的注释并改成c.NotebookApp.ip = '*'即可。
+
+
 镜像源修改
 conda config --show  --显示镜像源
 

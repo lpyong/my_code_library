@@ -76,3 +76,4 @@ c.NotebookApp.ip  c.NotebookApp.passwd    c.NotebookApp.notebook_dir
  conda deactivate  gluon
  
  nohup jupyter notebook --config /root/.jupyter/jupyter_notebook_config.py --allow-root &  
+pip install  tqdm -i  https://pypi.douban.com/simple --trust -host=pypi.douban.com
